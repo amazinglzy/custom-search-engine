@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  # Postgres
+  manager-db:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=custom_se
+      - POSTGRES_PASSWORD=custom_se
+      - POSTGRES_DB=custom_se
+    volumes:
+      - ./data/manager-db:/var/lib/postgresql/data
+
+  index-server-01:
+    image: elasticsearch:7.4.2
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./data/index-server/01:/usr/share/elasticsearch/data
+
+  index-monitor:
+    image: kibana:7.4.2
+    links:
+      - index-server-01:elasticsearch
+    ports:
+      - "5601:5601"
+
+  web:
+    build: ./custom_se
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./custom_se:/webapps
+    links:
+      - manager-db
+      - index-server-01
+    depends_on:
+      - manager-db
+      - index-server-01

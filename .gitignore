@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# development
+.idea
+.vscode
+
+# runtime data
+data
+log
