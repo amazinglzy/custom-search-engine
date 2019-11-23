@@ -14,4 +14,8 @@ DATABASES = {
     }
 }
 
+DOCUMENT_MIGRATE_APPS = [
+    'apps.cache',
+]
+
 connections.create_connection(hosts=['index-server-01'])
