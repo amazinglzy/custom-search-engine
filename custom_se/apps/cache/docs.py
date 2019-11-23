@@ -1,5 +1,5 @@
 from elasticsearch_dsl import Text, Date, Keyword
-from .registry import Document, registry
+from elasticsearch_migrate.registry import Document, registry
 
 
 @registry.register
