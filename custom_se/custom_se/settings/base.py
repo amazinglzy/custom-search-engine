@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
     'elasticsearch_migrate',
     'apps.cache',
     'apps.refresh',
