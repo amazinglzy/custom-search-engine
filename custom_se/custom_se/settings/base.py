@@ -40,8 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'elasticsearch_migrate',
-    'apps.cache',
-    'apps.refresh',
+    'apps.docs',
 ]
 
 MIDDLEWARE = [
