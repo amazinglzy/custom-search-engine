@@ -4,7 +4,7 @@ from .docs import Page
 
 
 class PageSerializer(serializers.Serializer):
-    id = serializers.UUIDField(source='meta.id', allow_null=True)
+    id = serializers.UUIDField(source='meta.id', required=False)
     url = serializers.CharField()
     title = serializers.CharField()
     content = serializers.CharField()
