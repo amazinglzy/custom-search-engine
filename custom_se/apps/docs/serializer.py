@@ -15,7 +15,7 @@ class PageSerializer(serializers.Serializer):
         instance.save()
         return instance
 
-    def update(self, instance, validated_data, partial=True):
+    def update(self, instance, validated_data, partial=False):
         instance.url = validated_data.get('url', instance.url if partial else None)
         instance.title = validated_data.get('title', instance.title if partial else None)
         instance.content = validated_data.get('content', instance.content if partial else None)

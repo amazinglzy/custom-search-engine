@@ -21,7 +21,7 @@ class PageViewSets(viewsets.ViewSet):
         page_size = req.query_params.get('page_size', 10)
         s = Page.search()
         if query:
-            s.query('multi_match', query=query, fields=['title', 'content'])
+            s = s.query('multi_match', query=query, fields=['title', 'content'])
         s = s[(page-1)*page_size: page*page_size]
         res = s.execute()
 
