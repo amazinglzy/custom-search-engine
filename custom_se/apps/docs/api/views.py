@@ -1,7 +1,7 @@
 import elasticsearch
 from rest_framework import viewsets, request, response, exceptions
-from .docs import Page
-from .serializer import PageSerializer
+from ..docs import Page
+from ..serializer import PageSerializer
 
 
 class PageViewSets(viewsets.ViewSet):
