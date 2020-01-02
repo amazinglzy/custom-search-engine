@@ -22,3 +22,15 @@ class PageSerializer(serializers.Serializer):
         instance.refreshed_at = datetime.now()
         instance.save()
         return instance
+
+
+class QueryPageSerializer(serializers.Serializer):
+    query = serializers.CharField(default=None)
+    page = serializers.IntegerField(default=1)
+    page_size = serializers.IntegerField(default=10)
+
+    def create(self, validated_data):
+        return validated_data
+
+    def update(self, instance, validated_data):
+        return instance

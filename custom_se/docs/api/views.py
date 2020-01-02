@@ -1,5 +1,6 @@
 import elasticsearch
 from rest_framework import viewsets, request, response, exceptions
+from utils.query import query_docs
 from ..docs import Page
 from ..serializer import PageSerializer
 
@@ -19,21 +20,12 @@ class PageViewSets(viewsets.ViewSet):
         query = req.query_params.get('query', None)
         page = req.query_params.get('page', 1)
         page_size = req.query_params.get('page_size', 10)
-        s = Page.search()
-        if query:
-            s = s.query('multi_match', query=query, fields=['title', 'content'])
-        s = s[(page-1)*page_size: page*page_size]
-        res = s.execute()
-
-        return response.Response({
-            'total': {
-                'value': res.hits.total.value,
-                'relation': res.hits.total.relation
-            },
-            'page': page,
-            'page_size': page_size,
-            'results': [ self.serializer_class(ins).data for ins in res.hits]
-        })
+        ret = query_docs(Page, ['title', 'content'], query, page, page_size)
+        results = ret.pop('results')
+        ret['results'] = [
+            self.serializer_class(ins).data for ins in results
+        ]
+        return response.Response(ret)
 
     def create(self, req: request.Request):
         serializer = self.serializer_class(data=req.data)

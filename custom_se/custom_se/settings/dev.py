@@ -15,7 +15,7 @@ DATABASES = {
 }
 
 DOCUMENT_MIGRATE_APPS = [
-    'apps.docs',
+    'docs',
 ]
 
 connections.create_connection(hosts=['index-server-01'])
@@ -23,7 +23,7 @@ connections.create_connection(hosts=['index-server-01'])
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'html')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -34,4 +34,8 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
 ]

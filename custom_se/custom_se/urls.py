@@ -18,8 +18,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('docs/', include(('apps.docs.urls', 'apps.docs'), namespace='docs')),
 
-    path('api/docs/', include(('apps.docs.api.urls', 'apps.docs'), namespace='api_docs')),
+    path('', include(('docs.front.urls', 'docs'), namespace='docs')),
+    path('api/docs/', include(('docs.api.urls', 'docs'), namespace='api_docs')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
+
+from django.conf import settings
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
