@@ -20,11 +20,13 @@ class PageViewSets(viewsets.ViewSet):
         query = req.query_params.get('query', None)
         page = req.query_params.get('page', 1)
         page_size = req.query_params.get('page_size', 10)
-        ret = query_docs(Page, ['title', 'content'], query, page, page_size)
-        results = ret.pop('results')
-        ret['results'] = [
-            self.serializer_class(ins).data for ins in results
-        ]
+        ret = query_docs(Page,
+                         ['title', 'content'],
+                         query=query,
+                         page=page,
+                         page_size=page_size)
+        hits = ret['results'].pop('hits')
+        ret['results']['hits'] = [hit.get('_source') for hit in hits]
         return response.Response(ret)
 
     def create(self, req: request.Request):

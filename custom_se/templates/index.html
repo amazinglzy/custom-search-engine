@@ -14,14 +14,55 @@
   </head>
   <body>
     {% include "components/nav.html" %}
-    <div class="container">
-        <div>Total: {{ total.relation }} {{ total.value }}</div>
+    <div class="container" style="margin-top: 10px">
         <div>
+            <span class="badge badge-primary">
+                搜索结果:
+                {% if total.relation == "eq" %} 等于 {{ total.value }}
+                {% else %} 其他情况
+                {% endif %}
+            </span>
+        </div>
+        <div class="row">
             {% for r in results %}
-                <div>
-                    <a href="{{ r.url }}">{{ r.title }}</a>
+                <div class="col-4">
+                    <div class="card bg-light" style="margin-top: 10px;">
+                        <div class="card-header">
+                            <a href="{{ r.url }}">{{ r.title | safe }}</a>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                {{ r.content | safe | truncatechars:200 }}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
+        </div>
+        <div style="margin-top: 20px">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% for item in pagination %}
+                        {% if item.type == 'previous' %}
+                            <li class="page-item {% if item.disabled %}disabled{% endif %}">
+                                <a class="page-link" href="?{% if query %}query={{ query }}{% endif %}&page={{ item.page }}" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                        {% elif item.type == 'middle' %}
+                            {% if item.active %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ item.page }}<span class="sr-only">(current)</span></span>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?{% if query %}query={{ query }}{% endif %}&page={{ item.page }}">{{ item.page }}</a></li>
+                            {% endif %}
+                        {% else %} {# last #}
+                            <li class="page-item {% if item.disabled %}disabled{% endif %}">
+                                <a class="page-link" href="?{% if query %}query={{ query }}{% endif %}&page={{ item.page }}">Next</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
         </div>
     </div>
 

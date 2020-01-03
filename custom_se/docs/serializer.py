@@ -34,3 +34,33 @@ class QueryPageSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         return instance
+
+
+class PageHighlightSerializer(serializers.Serializer):
+    url = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField()
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+    @staticmethod
+    def get_highlight_or_origin(field: str, instance: dict):
+        highlight = instance.get('highlight', {}).get(field)
+        origin = instance['_source'].get(field)
+        if highlight:
+            return '\n'.join(highlight)
+        return origin
+
+    def get_url(self, instance):
+        return instance['_source']['url']
+
+    def get_title(self, instance):
+        return self.get_highlight_or_origin('title', instance)
+
+    def get_content(self, instance):
+        return self.get_highlight_or_origin('content', instance)
+
